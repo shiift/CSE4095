@@ -13,6 +13,18 @@ int main()
         from n to 2n if n is nonnegative, or from 2n to n if 
         n is negative  
     */
-    
+    int i;
+    if(n >= 0){
+        i = n;
+        while(i <= 2 * n){
+            sum += i++;
+        }
+    }else{
+        i = 2 * n;
+        while(i <= n){
+            sum += i++;
+        }
+    }
+
     printf( "Sum is %d\n", sum );
 }
