@@ -6,20 +6,9 @@
 */
 int fib(int n)
 {
-    int fib_n1 = 1;
-    int fib_n2 = 0;
-
-    int i, temp;
-    if(i = 0){
-        return fib_n2;
-    }
-    for(i = 2; i <= n; i++){
-        temp = fib_n1;
-        fib_n1 += fib_n2;
-        fib_n2 = temp;    
-    }
-
-    return fib_n1;
+    if(n == 0){ return 0; }
+    if(n == 1){ return 1; }
+    return fib(n-1) + fib(n-2); 
 }
 
 /*
@@ -32,7 +21,7 @@ int isprime(int n)
     if(n < 2){ return 0; }                      // no numbers less than 2
     if(n == 2 || n == 3){ return 1; }           // 2 and 3 are prime
     if(n % 2 == 0 || n % 3 == 0){ return 0; }   // mult of 2 and 3 are not
-    for(i = 5; i < n/2; i += 6){                // check multiples from 5 -> n/2 (close enough to sqrt(n)) 
+    for(i = 5; i*i < n; i += 6){                // check multiples from 5 -> n/2 (close enough to sqrt(n)) 
         if(n % i == 0 || n % (i+2) == 0){
             return 0;
         }
