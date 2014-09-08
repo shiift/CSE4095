@@ -1,14 +1,34 @@
 #include <stdio.h>
 
+struct FibNum {
+    int n_1;
+    int n_2;
+};
+
 /*
   Write the  body of the following function for computing the n-th 
   Fibonacci number using recursion
 */
-int fib(int n)
+struct FibNum fib(int n)
 {
-    if(n == 0){ return 0; }
-    if(n == 1){ return 1; }
-    return fib(n-1) + fib(n-2); 
+    int temp;
+    struct FibNum fibs;
+
+    if(n == 0){
+        fibs.n_1 = 0;
+        fibs.n_2 = 0;
+        return fibs;
+    }
+    if(n == 1){
+        fibs.n_1 = 1;
+        fibs.n_2 = 0;
+        return fibs;
+    }
+    fibs = fib(n-1);
+    temp = fibs.n_1;
+    fibs.n_1 += fibs.n_2;
+    fibs.n_2 = temp;
+    return fibs; 
 }
 
 /*
@@ -36,7 +56,7 @@ int isprime(int n)
 int check( int n)
 {
     if(n > 46){ printf( "ERROR: Your number is too large for this program.\n" ); }
-    return isprime(fib(n));
+    return isprime(fib(n).n_1);
 }
 
 int main() 
