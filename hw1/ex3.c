@@ -18,11 +18,10 @@ double power2( double x, int n)
 {
     double result;
     if(n == 0){ return 1; }
-    result = power2( x, n/2 );
     if(n % 2 == 0){
-        return result * result;
+        return power2( x * x, n/2);
     }else{
-        return x * result * result;
+        return x * power2( x * x, n/2);
     }
 }
 
