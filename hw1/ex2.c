@@ -41,7 +41,7 @@ int isprime(int n)
     if(n < 2){ return 0; }                      // no numbers less than 2
     if(n == 2 || n == 3){ return 1; }           // 2 and 3 are prime
     if(n % 2 == 0 || n % 3 == 0){ return 0; }   // mult of 2 and 3 are not
-    for(i = 5; i*i < n; i += 6){                // check multiples from 5 -> n/2 (close enough to sqrt(n)) 
+    for(i = 5; i*i < n; i += 6){                // check multiples from 5 -> sqrt(n)
         if(n % i == 0 || n % (i+2) == 0){
             return 0;
         }
