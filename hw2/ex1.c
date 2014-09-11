@@ -7,6 +7,10 @@
 
 int super( int n, int* p )
 {
+    int i;
+    for( i = 1; i <= n; i++ )
+        if(p[p[i]] != i) return 0;
+    return 1;
 }
 
 int main()

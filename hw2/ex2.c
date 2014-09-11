@@ -6,8 +6,44 @@
   power using recursion
 */
 
+// assignment 1 power function
+double power( double x, int n)
+{
+    double result;
+    if(n == 0){ return 1; }
+    if(n % 2 == 0){
+        return power( x * x, n/2);
+    }else{
+        return x * power( x * x, n/2);
+    }
+}
+
+// evaluation of polynomial using power function
 double eval( int* a, int n, double x )
 {
+    int i;
+    double total = 0;
+    for(i=0; i<=n; i++){
+        total += a[i] * power(x,i);
+    }
+    return total;
+}
+
+
+// recursive evaluation of polynomial
+double eval_rec( int* a, int n, double x, int d)
+{
+    if(d == n){
+        return a[n];
+    }
+    return a[d] + x * eval_rec(a, n, x, d + 1);
+}
+
+// adpater to make eval_rec compatible with the function
+// call for eval
+double eval2( int* a, int n, double x )
+{
+    return eval_rec(a, n, x, 0);
 }
 
 int main()
@@ -29,5 +65,5 @@ int main()
         scanf( "%d", a+i );
     }
 
-    printf( "Polynomial evaluates to: %lf\n", eval(a, n, x) );
+    printf( "Polynomial evaluates to: %lf\n", eval2(a, n, x) );
 }
