@@ -48,6 +48,15 @@ void appendMono( Poly* p, Mono* m)
 }
 
 /***************************************************/
+Mono* removeFirst( Poly* p){
+    if( p->first == NULL) return NULL;
+    Mono* oldFirst = p->first;
+    p->first = oldFirst->next;
+    oldFirst->next = NULL;
+    return oldFirst;
+}
+
+/***************************************************/
 Poly* readPoly()
 {
     /*
@@ -55,6 +64,17 @@ Poly* readPoly()
        in the format described in the assignment document
        and construct its linked list representation
      */
+    int deg, c, k;
+    Poly* poly = newPoly();
+    scanf("%d", &deg); 
+    if (deg < 0) return poly;
+    poly->deg = deg;
+    do {
+        scanf("%d",&c);
+        scanf("%d",&k);
+        appendMono(poly, newMono(c,k,NULL));
+    } while(k != deg);
+    return poly;
 }
 
 /***************************************************/
@@ -64,8 +84,15 @@ void printPoly( Poly* p )
        Add code to print to standard output a polynomial
        in the format described in the assignment document
      */
+    Mono* mono = p->first;
+    int deg = p->deg;
+    printf("%d", deg);
+    while(mono != NULL){
+        printf(" %d %d",mono->coeff,mono->exp);
+        mono = mono->next;
+    }
+    printf("\n");
 }
-
 /***************************************************/
 Poly* addPoly( Poly* p1, Poly* p2 )
 {
@@ -74,6 +101,31 @@ Poly* addPoly( Poly* p1, Poly* p2 )
        given as linked lists
 
      */
+    // Go through the linked lists which are sorted least
+    // to greatest and find the smaller of the two
+    // - take the smaller and put it in the new poly
+    // - if they're the same add them
+
+    Poly* sumPoly = newPoly();
+    Mono* m1 = p1->first;
+    Mono* m2 = p2->first;
+    while(m1 != NULL || m2 != NULL){
+        if(m1 == NULL){
+            // append m2 to the end of sumPoly
+        }
+        if(m2 == NULL){
+            // append m1 to the end of sumPoly
+        }
+        if(m1->exp < m2->exp){
+            // remove first of m1 and put it in addPoly
+        }
+        else if(m1->exp > m2->exp){
+            // remove first of m2 and put it in addPoly
+        }
+        else{ // exponents are the same
+            // remove both firsts and add the coefficients
+        }
+    }
 }
 
 /***************************************************/
@@ -83,7 +135,11 @@ int main()
     Poly* p1 = readPoly();
     Poly* p2 = readPoly();
 
+    printPoly(p1);
     /*
+    removeFirst(p1);
+    printPoly(p1);
+    removeFirst(p1);
     printPoly(p1);
     printPoly(p2);
     printf("\n\n\n");
