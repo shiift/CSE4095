@@ -112,20 +112,44 @@ Poly* addPoly( Poly* p1, Poly* p2 )
     while(m1 != NULL || m2 != NULL){
         if(m1 == NULL){
             // append m2 to the end of sumPoly
+            sumPoly->last->next = p2->first;
+            sumPoly->last = p2->last;
+            sumPoly->deg = p2->deg;
+            break;
         }
         if(m2 == NULL){
             // append m1 to the end of sumPoly
+            sumPoly->last->next = p1->first;
+            sumPoly->last = p1->last;
+            sumPoly->deg = p1->deg;
+            break;
         }
         if(m1->exp < m2->exp){
             // remove first of m1 and put it in addPoly
+            Mono* tempMono = removeFirst(p1);
+            appendMono(sumPoly, tempMono);
+            sumPoly->deg = tempMono->exp;
         }
         else if(m1->exp > m2->exp){
             // remove first of m2 and put it in addPoly
+            Mono* tempMono = removeFirst(p2);
+            appendMono(sumPoly, tempMono);
+            sumPoly->deg = tempMono->exp;
         }
         else{ // exponents are the same
             // remove both firsts and add the coefficients
+            Mono* sumMono = removeFirst(p1);
+            Mono* tempMono = removeFirst(p2);
+            sumMono->coeff += tempMono->coeff;
+            appendMono(sumPoly, sumMono);
+            sumPoly->deg = sumPoly->last->exp;
         }
+        m1 = p1->first;
+        m2 = p2->first;
     }
+    free(p1);
+    free(p2);
+    return sumPoly;
 }
 
 /***************************************************/
@@ -135,11 +159,7 @@ int main()
     Poly* p1 = readPoly();
     Poly* p2 = readPoly();
 
-    printPoly(p1);
     /*
-    removeFirst(p1);
-    printPoly(p1);
-    removeFirst(p1);
     printPoly(p1);
     printPoly(p2);
     printf("\n\n\n");
