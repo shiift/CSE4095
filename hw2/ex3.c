@@ -141,8 +141,10 @@ Poly* addPoly( Poly* p1, Poly* p2 )
             Mono* sumMono = removeFirst(p1);
             Mono* tempMono = removeFirst(p2);
             sumMono->coeff += tempMono->coeff;
-            appendMono(sumPoly, sumMono);
-            sumPoly->deg = sumPoly->last->exp;
+            if(sumMono->coeff != 0){
+                appendMono(sumPoly, sumMono);
+                sumPoly->deg = sumPoly->last->exp;
+            }
         }
         m1 = p1->first;
         m2 = p2->first;
