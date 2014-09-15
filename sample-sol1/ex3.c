@@ -1,17 +1,33 @@
 #include <stdio.h>
 
 /*
-  Computes the n-th power using recursion
+  Computes the n-th power using recursion.
+  Since two recursive calls are made to power1(x,n/2), 
+  the overall runtime is linear in n
+*/
+double power1( double x, int n )
+{
+    if( n==0 ) { return 1; }
+    if( n==1 ) { return x; }
+    if( n%2==0 ) { return( power1(x,n/2)*power1(x,n/2) ); } 
+    else return( x*power1(x,n/2)*power1(x,n/2) );
+
+}
+
+/*
+  Computes the n-th power using recursion. 
+  Since a single call is made to power(x,n/2), 
+  the overall runtime is logarithmic in n
 */
 double power( double x, int n )
 {
-   double  power1; 
+    double p; 
+    if( n==0 ) { return 1; }
+    if( n==1 ) { return x; }
+    p = power(x,n/2);
+    if( n%2==0 ) { return( p*p ); } 
+    else return( x*p*p );
 
-   if( n==0 ) { return(1); }
-   if( n==1 ) { return(x); }
-   power1 = power( x, n/2 );
-   if( n % 1 == 0 ) { return power1*power1; }
-   if( n % 1 == 1 ) { return x*power1*power1; }
 }
 
 
