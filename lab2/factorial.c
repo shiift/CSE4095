@@ -12,7 +12,6 @@ int factorial(int n) {
     if(n == 0) 
         return result;
     result = factorial(n-1) * n;
-//    return result;
 }
 
 int main(int argc, char **argv) {
