@@ -81,7 +81,7 @@ int main()
     double**   a;
     double**   t;
 
-    printf( "Enter m and n (<= 0 to exit)" );
+    printf( "Enter m and n (<= 0 to exit)\n" );
     scanf( "%d %d", &m, &n );
 
     while( (m > 0) && (n > 0) )
@@ -102,7 +102,7 @@ int main()
            }
            free_matrix(a, m);
         }
-        printf( "Enter m and n (<= 0 to exit)" );
+        printf( "Enter m and n (<= 0 to exit)\n" );
         scanf( "%d %d", &m, &n );
     }
     return 0;
