@@ -47,11 +47,7 @@ Tree* readDictionary(char* fname)
    }
    rewind(f);
    char** words = (char**)malloc(sizeof(char*)*nbWords);
-<<<<<<< HEAD
-   int at = 1;
-=======
    int at = 0;
->>>>>>> f70fab4312315b3768d4216e6b196ed54b774ff2
    while(!feof(f)) {
       fscanf(f,"%s\n",line);
       words[at++] = strdup(cleanupWord(line)); // words[at] has no punctuation and is all lowercase.
@@ -59,12 +55,8 @@ Tree* readDictionary(char* fname)
    qsort(words,nbWords,sizeof(char*),stringCompare);	
    // remove duplicates that could appear as result of 'cleanup' above. So this is a packing
    at = 1;
-<<<<<<< HEAD
-   for(int i=1;i<nbWords;i++) {
-=======
    int i;
    for(i=1;i<nbWords;i++) {
->>>>>>> f70fab4312315b3768d4216e6b196ed54b774ff2
       // If the 'cleaned-up' word at offset at-1 is the same as at offset i, drop the i^th one!
       // Also drop if the word is empty
       if (strcmp(words[at-1],words[i]) != 0 && strlen(words[i]) > 0)
@@ -74,13 +66,10 @@ Tree* readDictionary(char* fname)
    nbWords = at;  // adjust the number of words after the de-duplication.
    Tree* t = makeEmptyTree();
    fillTreeWith(t,words,0,nbWords-1);
-<<<<<<< HEAD
-=======
    for(i = 0; i < nbWords; i++){
      free(words[i]);
    }
    free(words);
->>>>>>> f70fab4312315b3768d4216e6b196ed54b774ff2
    fclose(f);
    return t;
 }
