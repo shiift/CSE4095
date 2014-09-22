@@ -6,7 +6,7 @@ int main(int argc,char* argv[])
 {
 	char* str1 = strdup("test");
 	char* str2 = strdup("Hello");
-	str1 = str2;
+	//str1 = str2;
 	printf("STRING1: %s\n",str1);
 	free(str1);
 	printf("STRING2: %s\n",str2);
