@@ -34,6 +34,7 @@ SparseMatrix* new_matrix( int nrows, int ncols )
     matrix->cols = ncols;
     matrix->row = (Node**)malloc(sizeof(struct Node*) * nrows);
     matrix->col = (Node**)malloc(sizeof(struct Node*) * ncols);
+    return matrix;
 }
 
 void free_matrix( SparseMatrix* a )
@@ -41,7 +42,16 @@ void free_matrix( SparseMatrix* a )
     /*
         Free all space allocated for matrix "a"
     */
-
+    int i;
+    for(i = 0; i < a->rows; i++){
+        Node* current_node = a->row[i];
+        while(current_node != NULL){
+            Node* next_node = current_node->next_col;
+            free(current_node);
+            current_node = next_node;
+        }
+    }
+    free(a);
 }
 
 SparseMatrix* print_matrix( SparseMatrix* a )
@@ -54,11 +64,47 @@ SparseMatrix* print_matrix( SparseMatrix* a )
     printf("%d %d\n", a->rows, a->cols);
     for(i = 0; i < a->rows; i++){
         Node* current_node = a->row[i];
-        while(current_node->next_col != NULL){
+        while(current_node != NULL){
             printf("%d %d %lf\n", current_node->row, current_node->col, current_node->data);
             current_node = current_node->next_col;
         }
     }
+    return a;
+}
+
+Node* insert_node( SparseMatrix* a, int i, int j, double val )
+{
+    /*
+      Insert a new node into the matrix
+     */
+    // Allocate space for new node and define it 
+    Node* node = (Node*)malloc(sizeof(struct Node));
+    node->row = i;
+    node->col = j;
+    node->data = val;
+
+    // Find row and insert the new node
+    if(a->row[i] == NULL){
+        a->row[i] = node;
+    }else{
+        Node* current_node = a->row[i];
+        while(current_node->next_col != NULL){
+            current_node = current_node->next_col;
+        }
+        current_node->next_col = node;
+    }
+
+    // Find col and insert the new node
+    if(a->col[j] == NULL){
+        a->col[j] = node;
+    }else{
+        Node* current_node = a->col[j];
+        while(current_node->next_row != NULL){
+            current_node = current_node->next_row;
+        }
+        current_node->next_row = node;
+    }
+    return node;
 }
 
 SparseMatrix* transpose_matrix( SparseMatrix* a )
@@ -68,6 +114,16 @@ SparseMatrix* transpose_matrix( SparseMatrix* a )
         the element of "a" in transposed order (with rows and columns 
         swapped)
     */
+    SparseMatrix* b = new_matrix(a->cols, a->rows);
+    int i;
+    for(i = 0; i < a->cols; i++){
+        Node* current_node = a->col[i];
+        while(current_node != NULL){
+            Node* new_node = insert_node(b, current_node->col, current_node->row, current_node->data);
+            current_node = current_node->next_row;
+        }
+    }
+    return b;
 }
 
 
@@ -103,39 +159,7 @@ int main()
             printf("Your dimensions fall outside the size of the array\n");
             exit;
         }
-       
-        // Allocate space for new node and define it 
-        Node* node = (Node*)malloc(sizeof(struct Node));
-        node->row = i;
-        node->col = j;
-        node->data = val;
-        //printf("%d %d %lf\n", i, j, val);
-        
-        // Find row and insert the new node
-        if(a->row[i] == NULL){
-            printf("Empty row: %d %d %lf\n", node->row, node->col, node->data);
-            a->row[i] = node;
-        }else{
-            Node* current_node = a->row[i];
-            while(current_node->next_col != NULL){
-                current_node = current_node->next_col;
-            }
-            printf("Nonempty row: %d %d %lf\n", node->row, node->col, node->data);
-            current_node->next_col = node;
-        }
-
-        // Find col and insert the new node
-        if(a->col[j] == NULL){
-            printf("Empty col: %d %d %lf\n", node->row, node->col, node->data);
-            a->col[j] = node;
-        }else{
-            Node* current_node = a->col[j];
-            while(current_node->next_row != NULL){
-                current_node = current_node->next_row;
-            }
-            printf("Nonempty col: %d %d %lf\n", node->row, node->col, node->data);
-            current_node->next_row = node;
-        }
+        insert_node(a, i, j, val);
     }
 
     if( !(b = transpose_matrix(a)) )
@@ -144,8 +168,7 @@ int main()
         return 1;
     }
 
-    print_matrix( a );
-    //print_matrix( b );
+    print_matrix( b );
 
     free_matrix( a );
     free_matrix( b );
