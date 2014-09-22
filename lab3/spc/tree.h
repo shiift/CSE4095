@@ -17,4 +17,8 @@ Tree* makeEmptyTree();
 void destroyTree(Tree* root);
 Tree* addStringToTree(Tree* t,char* value);
 bool lookupInTree(Tree* t,char* value);
+<<<<<<< HEAD
 #endif
+=======
+#endif
+>>>>>>> f70fab4312315b3768d4216e6b196ed54b774ff2

@@ -34,6 +34,13 @@ SparseMatrix* new_matrix( int nrows, int ncols )
     matrix->cols = ncols;
     matrix->row = (Node**)malloc(sizeof(struct Node*) * nrows);
     matrix->col = (Node**)malloc(sizeof(struct Node*) * ncols);
+    int i;
+    for(i = 0; i < nrows; i++){
+        matrix->row[i] = NULL;
+    }
+    for(i = 0; i < ncols; i++){
+        matrix->col[i] = NULL;
+    }   
     return matrix;
 }
 
@@ -84,6 +91,8 @@ Node* insert_node( SparseMatrix* a, int i, int j, double val )
     node->row = i;
     node->col = j;
     node->data = val;
+    node->next_row = NULL;
+    node->next_col = NULL;
 
     // Find row and insert the new node
     if(a->row[i] == NULL){
