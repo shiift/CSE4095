@@ -51,6 +51,8 @@ void free_matrix( SparseMatrix* a )
             current_node = next_node;
         }
     }
+    free(a->row);
+    free(a->col);
     free(a);
 }
 
