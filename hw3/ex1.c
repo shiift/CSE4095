@@ -18,14 +18,13 @@ int main()
      output the text with the vowels removed
     */
     char string[1001];
-
-    printf("Enter a string:");
-    fgets(string, 1001, stdin);
-
-    int i;
-    for(i = 0; string[i] != 0; i++){
-        if(!is_vowel(string[i])){
-            printf("%c", string[i]);
+    printf("Enter a string (press ctrl+c to quit):\n");
+    while(fgets(string, 1001, stdin) != NULL){
+        int i;
+        for(i = 0; string[i] != 0; i++){
+            if(!is_vowel(string[i])){
+                printf("%c", string[i]);
+            }
         }
     }
     return 0;
