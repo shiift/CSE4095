@@ -27,6 +27,7 @@ int main(int argc,char* argv[])
 {
 	Hashtable* theTable = readWordList("pairs.txt");
 	playGame(theTable);
+    isInHTable(theTable, "war");
 	destroyHTable(theTable);
 	return 0;
 }

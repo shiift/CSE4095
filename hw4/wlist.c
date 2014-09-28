@@ -1,4 +1,7 @@
 #include "wlist.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 Hashtable* readWordList(char* filename)
 {
@@ -10,4 +13,21 @@ Hashtable* readWordList(char* filename)
 		Make sure that the hashtable is large enough to accomodate 
 		your list of pairs. Use a prime number for the size. 		
 		*/
+    Hashtable* t = makeHTable(113);
+    FILE *fp;
+    char s[1024];
+    fp = fopen(filename, "r");
+
+    while (fgets(s, 34, fp) != NULL){
+        char *c, *k, *v;
+        c = strchr(s, '\n');
+        if (c != NULL)
+            *c = '\0';
+        k = strtok(s, " ");
+        v = strtok(NULL, " ");
+        addHTable(t, k, v);
+    }
+
+    fclose(fp);
+    return t;
 }
