@@ -25,9 +25,10 @@ void playGame(Hashtable* t)
 
 int main(int argc,char* argv[])
 {
-	Hashtable* theTable = readWordList("pairs.txt");
+	Hashtable* theTable = readWordList("pairs2.txt");
 	playGame(theTable);
-    isInHTable(theTable, "war");
+    isInHTable(theTable, "Adam");
+    printf("%s\n", theTable->_tab[70]->_key);
 	destroyHTable(theTable);
 	return 0;
 }

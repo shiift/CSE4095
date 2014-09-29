@@ -2,6 +2,7 @@
 #include "hash.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 Hashtable* makeHTable(int mxs)
 {
@@ -21,13 +22,12 @@ Hashtable* makeHTable(int mxs)
 
 void addHTable(Hashtable* t,char* key,char* value)
 {
-    if(DEBUG)
-        printf("addHTable: %s\t%s\n", key, value);
+    printf("addHTable: \"%s\"\t\"%s\"\n", key, value);
 	/* Add the pair key/value to the hashtable t. */
     int hash = getHash(t, key);
     HTNode* newNode = (HTNode*)malloc(sizeof(HTNode));
-    newNode->_key = key;
-    newNode->_value = value;
+    newNode->_key = strdup(key);
+    newNode->_value = strdup(value);
     newNode->_next = NULL;
     if(t->_tab[hash] == NULL){
         t->_tab[hash] = newNode;
@@ -37,9 +37,9 @@ void addHTable(Hashtable* t,char* key,char* value)
             cNode = cNode->_next;
         }
         cNode->_next = newNode;
-        if(DEBUG)
-            printf("addHTable: added %s\t%s\n", cNode->_next->_key, cNode->_next->_value);
     }
+    printf("addHTable: added %d\t\"%s\"\t\"%s\"\n", hash, t->_tab[hash]->_key, t->_tab[hash]->_value);
+    printf("addHTable: in 104 %s\n", t->_tab[104]->_key);
 }
 
 void removeFromHTable(Hashtable* t,char* key)
@@ -54,6 +54,8 @@ void removeFromHTable(Hashtable* t,char* key)
         return;
     }
     while( cNode->_next != NULL ){
+        if(DEBUG)
+            printf("removeFromHTable: %s\t%s\n", cNode->_next->_key, cNode->_next->_value);
         if(strcmp(cNode->_next->_key, key) == 0){
             HTNode* tempNode = cNode->_next->_next;
             free(cNode->_next);
@@ -71,6 +73,7 @@ BOOL isInHTable(Hashtable* t,char* key)
     int hash = getHash(t, key);
     HTNode* cNode = t->_tab[hash];
     while( cNode != NULL ){
+        printf("isInHTable: %s\t%s\n", cNode->_key, cNode->_value);
         if(strcmp(cNode->_key, key) == 0){
             return TRUE;
         }
@@ -127,7 +130,6 @@ int getHash(Hashtable* t, char* key){
             a *= 2;
         i++;
     }
-    if(DEBUG)
-        printf("getHash: hash = %d\n", sum % size);
+    printf("getHash: hash = %d\n", sum % size);
     return sum % size; 
 }
