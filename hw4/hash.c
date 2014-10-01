@@ -22,7 +22,6 @@ Hashtable* makeHTable(int mxs)
 
 void addHTable(Hashtable* t,char* key,char* value)
 {
-    printf("addHTable: \"%s\"\t\"%s\"\n", key, value);
 	/* Add the pair key/value to the hashtable t. */
     int hash = getHash(t, key);
     HTNode* newNode = (HTNode*)malloc(sizeof(HTNode));
@@ -38,8 +37,6 @@ void addHTable(Hashtable* t,char* key,char* value)
         }
         cNode->_next = newNode;
     }
-    printf("addHTable: added %d\t\"%s\"\t\"%s\"\n", hash, t->_tab[hash]->_key, t->_tab[hash]->_value);
-    printf("addHTable: in 104 %s\n", t->_tab[104]->_key);
 }
 
 void removeFromHTable(Hashtable* t,char* key)
@@ -48,23 +45,25 @@ void removeFromHTable(Hashtable* t,char* key)
 		*/
     int hash = getHash(t, key);
     HTNode* cNode = t->_tab[hash];
+    HTNode* pNode = t->_tab[hash];
     if(strcmp(cNode->_key, key) == 0){
         t->_tab[hash] = cNode->_next;
+        free(cNode->_key);
+        free(cNode->_value);
         free(cNode);
         return;
     }
-    while( cNode->_next != NULL ){
-        if(DEBUG)
-            printf("removeFromHTable: %s\t%s\n", cNode->_next->_key, cNode->_next->_value);
-        if(strcmp(cNode->_next->_key, key) == 0){
-            HTNode* tempNode = cNode->_next->_next;
-            free(cNode->_next);
-            cNode->_next = tempNode;
-            return;
+    while( cNode != NULL ){
+        if(strcmp(cNode->_key, key) == 0){
+            HTNode* fNode = cNode->_next;
+            free(cNode->_key);
+            free(cNode->_value);
+            free(cNode);
+            pNode->_next = fNode;
         }
+        pNode = cNode;
         cNode = cNode->_next;
     }
-    printf("Key not in table.\n");
 }
 
 BOOL isInHTable(Hashtable* t,char* key)
@@ -73,7 +72,6 @@ BOOL isInHTable(Hashtable* t,char* key)
     int hash = getHash(t, key);
     HTNode* cNode = t->_tab[hash];
     while( cNode != NULL ){
-        printf("isInHTable: %s\t%s\n", cNode->_key, cNode->_value);
         if(strcmp(cNode->_key, key) == 0){
             return TRUE;
         }
@@ -107,6 +105,8 @@ void destroyHTable(Hashtable* t)
             HTNode* cNode = t->_tab[i];
             while(cNode != NULL){
                 HTNode* nNode = cNode->_next;
+                free(cNode->_key);
+                free(cNode->_value);
                 free(cNode);
                 cNode = nNode;
             }
@@ -125,11 +125,10 @@ int getHash(Hashtable* t, char* key){
     while( key[i] != '\0' ){
         sum += key[i] * a;
         if(a == 0)
-            a = 2;
+            a = 7;
         else
-            a *= 2;
+            a *= 7;
         i++;
     }
-    printf("getHash: hash = %d\n", sum % size);
     return sum % size; 
 }

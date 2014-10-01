@@ -25,7 +25,10 @@ Hashtable* readWordList(char* filename)
             *c = '\0';
         k = strtok(s, " ");
         v = strtok(NULL, " ");
-        addHTable(t, k, v);
+        if(!(isInHTable(t, k) || isInHTable(t, v))){
+            addHTable(t, k, v);
+            addHTable(t, v, k);
+        }
     }
 
     fclose(fp);

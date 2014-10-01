@@ -35,7 +35,7 @@ ranting  raving
 cream  sugar	
 read  write	
 crime  punishment 
-right  orwrong	
+right  wrong	
 cup  saucer 
 rise  fall 
 dead  alive 
