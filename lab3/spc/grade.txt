@@ -1,0 +1,6 @@
+Grading rubric:
+20    Fixed at=1		yes	
+20    Fixed leak		yes
+20    Fixed missing init	yes	
+20    No crash	    		yes
+20    Clean valgrind report	yes
