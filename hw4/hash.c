@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 
 Hashtable* makeHTable(int mxs)
 {
@@ -130,5 +131,7 @@ int getHash(Hashtable* t, char* key){
             a *= 7;
         i++;
     }
-    return sum % size; 
+    int rv = sum % size; 
+    assert(rv >= 0 && rv < size);
+    return rv;
 }

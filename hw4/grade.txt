@@ -1,0 +1,28 @@
+compile / no crash: 10pts		10
+working: 10pts				8   (termination not handled, valgrind issue.)
+readWordList : 10pts			10	
+
+hash.c: 50pts
+make		10			10
+addHTable	10			8 potential overflow issue. side-stepped because the hash function is weak. Should be sum = sum * a + key[i]. 
+remove		10			8   what if cNode == NULL at the beginning? (if strcmp(cNode->_key....)
+member		10			10
+destroy		10			10	
+
+main.c: 20pts				20
+
+Valgrind issue:
+
+Enter a matching value: war
+==36282== Invalid read of size 8
+==36282==    at 0x100001BDD: removeFromHTable (in ./wgame)
+==36282==    by 0x1000015C4: playGame (in ./wgame)
+==36282==    by 0x1000016E1: main (in ./wgame)
+==36282==  Address 0x10001d8e0 is 0 bytes inside a block of size 24 free'd
+==36282==    at 0x4D9D: free (vg_replace_malloc.c:477)
+==36282==    by 0x100001BC5: removeFromHTable (in ./wgame)
+==36282==    by 0x1000015C4: playGame (in ./wgame)
+==36282==    by 0x1000016E1: main (in ./wgame)
+==36282== 
+You entered a corrrect match!
+
