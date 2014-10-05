@@ -121,7 +121,7 @@ Poly* addPoly( Poly* p1, Poly* p2 )
     Poly* result = newPoly();
 
     m1 = (p1==NULL ? NULL : p1->first);
-    m2 = (p2==NULL ? NULL : p2->first);
+    m1 = (p2==NULL ? NULL : p2->first);
 
     while( m1!=NULL && m2!=NULL )
     {
@@ -179,11 +179,11 @@ int main()
     Poly* p2 = readPoly();
     Poly* sum;
 
-    /* 
+    /**/
     printPoly(p1);
     printPoly(p2);
     printf("\n\n\n");
-    */
+    /**/
 
     if( (p1 == NULL) && (p2 == NULL) )
     {

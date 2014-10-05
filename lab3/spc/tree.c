@@ -30,6 +30,8 @@ TNode* addStringToTreeAux(TNode* root,char* value)
       root->_left = NULL;
       root->_right = NULL;
       root->_key  = strdup(value);
+      // BUG: This was not properly initialized. 
+      root->_left = root->_right = NULL;
       return root;
    } else {
       if (strcmp(value,root->_key) < 0)

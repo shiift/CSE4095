@@ -59,6 +59,7 @@ Mono* removeFirst( Poly* p){
 /***************************************************/
 Poly* readPoly()
 {
+<<<<<<< HEAD
     /*
        Add code to read from standard input a polynomial
        in the format described in the assignment document
@@ -75,11 +76,40 @@ Poly* readPoly()
         appendMono(poly, newMono(c,k,NULL));
     } while(k != deg);
     return poly;
+=======
+  int coeff, exp;
+  int doneReading = 0;
+  Poly* p = newPoly();
+
+
+  printf("Enter a polynomial: (separate each by an enter)");
+
+  scanf("%d", &exp);
+  printf(" ");
+  
+  p->deg = exp;
+  while(!doneReading)
+    {
+      scanf("%d", &coeff);
+      printf(" ");
+      scanf("%d", &exp);
+      printf(" ");
+
+      Mono* mono = newMono(coeff, exp, NULL);
+      appendMono(p, mono);
+
+      if(exp == p->deg)
+	doneReading = 1;
+    }
+
+  return p;
+>>>>>>> 445d210ae5251ac3c641e54e7aeae5a2be4c6d4f
 }
 
 /***************************************************/
 void printPoly( Poly* p )
 {
+<<<<<<< HEAD
     /*
        Add code to print to standard output a polynomial
        in the format described in the assignment document
@@ -92,14 +122,78 @@ void printPoly( Poly* p )
         mono = mono->next;
     }
     printf("\n");
+=======
+  Mono* temp = p->first;
+  printf("%d ", p->deg);
+
+  while(temp)
+    {
+      printf("%d %d ", temp->coeff, temp->exp);
+      temp = temp->next;
+    }
+
+  printf("\n");
+>>>>>>> 445d210ae5251ac3c641e54e7aeae5a2be4c6d4f
 }
 /***************************************************/
 Poly* addPoly( Poly* p1, Poly* p2 )
 {
-    /*
-       Add code to compute the sum of two polynomials
-       given as linked lists
+  Poly* pNew = newPoly();
+  Mono *temp1 = p1->first, *temp2 = p2->first;
 
+  /* Set degree of polynomial to the higher of the two */
+  if(p1->deg > p2->deg)
+      pNew->deg = p1->deg;
+  else
+      pNew->deg = p2->deg;
+
+  /* Loop through both polynomials */
+  while(temp1 || temp2)
+    {
+      /* If temp1 or temp2 is NULL pointer, just add the other */
+      if(temp1 == NULL)
+	{
+	  Mono* temp = newMono(temp2->coeff, temp2->exp, NULL);
+	  appendMono(pNew, temp);
+	  
+	  temp2 = temp2->next;
+	}
+      else if(temp2 == NULL)
+	{
+	  Mono* temp = newMono(temp1->coeff, temp1->exp, NULL);
+	  appendMono(pNew, temp);
+
+	  temp1 = temp1->next;
+	}
+      
+      /* If not null and one is greater than the other, just use that one */
+      else if(temp1->exp > temp2->exp)
+	{
+	  Mono* temp = newMono(temp2->coeff, temp2->exp, NULL);
+	  appendMono(pNew, temp);
+
+	  temp2 = temp2->next;
+	}
+      else if(temp2->exp > temp1->exp)
+	{
+	  Mono* temp = newMono(temp1->coeff, temp1->exp, NULL);
+	  appendMono(pNew, temp);
+
+	  temp1 = temp1->next;
+	}
+
+      /* If both are equal degrees, add the coefficients together */
+      else if(temp1->exp == temp2->exp)
+	{
+	  Mono* temp = newMono(temp1->coeff+temp2->coeff, temp1->exp, NULL);
+	  appendMono(pNew, temp);
+	  
+	  temp1 = temp1->next;
+	  temp2 = temp2->next;
+	}
+    }
+
+<<<<<<< HEAD
      */
     // Go through the linked lists which are sorted least
     // to greatest and find the smaller of the two
@@ -152,6 +246,9 @@ Poly* addPoly( Poly* p1, Poly* p2 )
     free(p1);
     free(p2);
     return sumPoly;
+=======
+  return pNew;
+>>>>>>> 445d210ae5251ac3c641e54e7aeae5a2be4c6d4f
 }
 
 /***************************************************/

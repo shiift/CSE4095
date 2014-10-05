@@ -47,7 +47,11 @@ Tree* readDictionary(char* fname)
    }
    rewind(f);
    char** words = (char**)malloc(sizeof(char*)*nbWords);
+<<<<<<< HEAD
    int at = 0;
+=======
+   int at = 0;  // BUG: starting at 1, entry 0 never initialized. fix to start at 0
+>>>>>>> 445d210ae5251ac3c641e54e7aeae5a2be4c6d4f
    while(!feof(f)) {
       fscanf(f,"%s\n",line);
       words[at++] = strdup(cleanupWord(line)); // words[at] has no punctuation and is all lowercase.
@@ -66,10 +70,18 @@ Tree* readDictionary(char* fname)
    nbWords = at;  // adjust the number of words after the de-duplication.
    Tree* t = makeEmptyTree();
    fillTreeWith(t,words,0,nbWords-1);
+<<<<<<< HEAD
    for(i = 0; i < nbWords; i++){
      free(words[i]);
    }
    free(words);
+=======
+   // Bug: The tree is leaking! FIX to deallocate the tree.
+   for(int i=0;i < nbWords;i++) 
+      free(words[i]);
+   free(words);
+   // end of fix. 
+>>>>>>> 445d210ae5251ac3c641e54e7aeae5a2be4c6d4f
    fclose(f);
    return t;
 }
