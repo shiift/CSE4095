@@ -28,6 +28,8 @@ TNode* addStringToTreeAux(TNode* root,char* value)
    if (root == NULL) {
       root = (TNode*)malloc(sizeof(TNode));
       root->_key  = strdup(value);
+      // BUG: This was not properly initialized. 
+      root->_left = root->_right = NULL;
       return root;
    } else {
       if (strcmp(value,root->_key) < 0)

@@ -3,43 +3,66 @@
 
 double** allocate_matrix( int rows, int cols )
 {
-    /*
-        Allocate space for a rows X cols matrix 
-    */
+  int i;
+
+  /* Create row of all pointers (those will be individually allocated */
+  double** matrix = (double **)calloc(rows, sizeof(double *) * rows);
+  
+  for(i=0; i < rows; i++)
+      matrix[i] = (double *)calloc(cols, sizeof(double) * cols);
+
+  return matrix;
 }
 
 void free_matrix( double** a, int rows )
 {
-    /*
-        Free the space for a matrix; the number of rows 
-        may be needed if each row is allocated with a 
-        separate malloc/calloc
-    */
+  int i;
+  for(i=0; i < rows; i++)
+    free(a[i]);
 }
 
 int read_matrix( double** a, int rows, int cols )
 {
-    /*
-        Read in from standard input the elements of a 
-        rows X cols matrix, given row by row, and within 
-        a row in increasing column order
-    */
+  int i, j;
+  double temp;
+
+  for(i=0; i < rows; i++)
+    {
+      printf("Enter Row %d: ", (i+1));
+      for(j=0; j < rows; j++)
+	{
+	  scanf("%lf", &temp);
+	  a[i][j] = temp;
+	}
+    }
 }
 
 void print_matrix( double** a, int rows, int cols )
 {
-    /*
-        Print matrix elements to standard output, one line per row
-    */
+  int i, j;
+  for(i=0; i < rows; i++)
+    {
+      for(j=0; j < cols; j++)
+	printf("%lf ", a[i][j]);
+      
+      printf("\n");
+    }
 }
 
 double** transpose( double** a, int rows, int cols )
 {
-    /*
-        Allocate and return the address of a matrix that contains 
-        the element of "a" in transposed order (with rows and columns 
-        swapped)
-    */
+  int i, j;
+  double** transpose = allocate_matrix(cols, rows);
+
+  for(i=0; i < rows; i++)
+    {
+      for(j=0; j < cols; j++)
+	{
+	  transpose[j][i] = a[i][j];
+	}
+    }
+
+  return transpose;
 }
 
 int main()

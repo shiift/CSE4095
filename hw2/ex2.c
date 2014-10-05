@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 /*
   Write the  body of the following function for computing the n-th 
@@ -8,6 +9,15 @@
 
 double eval( int* a, int n, double x )
 {
+  int i;
+  double sum;
+
+  for(i = 0; i < n+1; i++)
+    {
+      sum += (a[i] * pow(x, i));
+    }
+
+  return sum;
 }
 
 int main()
