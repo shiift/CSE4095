@@ -1,32 +1,17 @@
 #include <stdio.h>
 
-int isEven(int n)
+/*
+  Write the  body of the following function for computing the n-th 
+  power using recursion
+*/
+double power( double x, int n )
 {
-<<<<<<< HEAD
     if(n == 0){ return 1; }
     if(n % 2 == 0){
         return power( x, n/2 ) * power( x, n/2 );
     }else{
         return x * power( x, n/2 ) * power( x, n/2 );
     }
-=======
-  return (n % 2 == 0) ? 1 : 0;
-}
-
-double power( double x, int n)
-{
-  /* Check base-cases */
-  if(n == 0)
-    return 1;
-  if(n == 1)
-    return x;
-
-  /* Check which recursion algorithm to use  */
-  if(isEven(n))
-      return power(x, n/2) * power(x, n/2);
-  else
-    return x * power(x, n/2) * power(x, n/2);
->>>>>>> 445d210ae5251ac3c641e54e7aeae5a2be4c6d4f
 }
 
 double power2( double x, int n)

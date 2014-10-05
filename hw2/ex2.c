@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 
 /*
   Write the  body of the following function for computing the n-th 
@@ -22,7 +21,6 @@ double power( double x, int n)
 // evaluation of polynomial using power function
 double eval( int* a, int n, double x )
 {
-<<<<<<< HEAD
     int i;
     double total = 0;
     for(i=0; i<=n; i++){
@@ -46,17 +44,6 @@ double eval_rec( int* a, int n, double x, int d)
 double eval2( int* a, int n, double x )
 {
     return eval_rec(a, n, x, 0);
-=======
-  int i;
-  double sum;
-
-  for(i = 0; i < n+1; i++)
-    {
-      sum += (a[i] * pow(x, i));
-    }
-
-  return sum;
->>>>>>> 445d210ae5251ac3c641e54e7aeae5a2be4c6d4f
 }
 
 int main()

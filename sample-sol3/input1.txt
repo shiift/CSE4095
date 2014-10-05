@@ -1,5 +1,0 @@
-The ancient Egyptians wrote in hieroglyphics. In their system of writing, vowel sounds are not represented, only 
-consonants. Is written English generally understandable without vowels? To experiment, write a function is_vowel() that 
-returns 1 if a letter is a vowel and 0 otherwise.  Use your function in a program that reads text from the standard 
-input and writes to the standard output the text with the vowels removed. For example, running the program with this 
-paragraph given as input should produce as output:

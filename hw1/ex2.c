@@ -1,6 +1,5 @@
 #include <stdio.h>
 
-<<<<<<< HEAD
 struct FibNum {
     int n_1;
     int n_2;
@@ -30,24 +29,14 @@ struct FibNum fib(int n)
     fibs.n_1 += fibs.n_2;
     fibs.n_2 = temp;
     return fibs; 
-=======
-int fib(int n)
-{
-
-  /* First two numbers are 1 (for base case) */
-  if(n == 0)
-    return 1;
-  if(n == 1)
-    return 1;
-
-  /* Recurse to get the next number */
-  return fib(n-1) + fib(n-2);
->>>>>>> 445d210ae5251ac3c641e54e7aeae5a2be4c6d4f
 }
 
+/*
+  Write the  body of the following function; return 1 if n is prime and 0 
+  otherwise
+*/
 int isprime(int n)
 {
-<<<<<<< HEAD
     int i;
     if(n < 2){ return 0; }                      // no numbers less than 2
     if(n == 2 || n == 3){ return 1; }           // 2 and 3 are prime
@@ -58,16 +47,6 @@ int isprime(int n)
         }
     }
     return 1;                                   // all others are prime
-=======
-  int i, prime = 0;
-  for(i = 2; i < n; i++)
-    {
-      if(n % i == 0)
-	prime = 1;
-    }
-
-  return prime;
->>>>>>> 445d210ae5251ac3c641e54e7aeae5a2be4c6d4f
 }
 
 /*
@@ -76,12 +55,8 @@ int isprime(int n)
 */
 int check( int n)
 {
-<<<<<<< HEAD
     if(n > 46){ printf( "ERROR: Your number is too large for this program.\n" ); }
     return isprime(fib(n).n_1);
-=======
-  return isprime(fib(n));
->>>>>>> 445d210ae5251ac3c641e54e7aeae5a2be4c6d4f
 }
 
 int main() 
@@ -93,7 +68,6 @@ int main()
         printf( "Enter the value of n (negative to exit): " );
         scanf( "%d", &n );
         if( n < 0 ) return 0;
-
         if( check(n) )
         {
             printf( "%dth Fibonacci number is prime\n",  n );
