@@ -15,7 +15,7 @@ char* make_copy(int i, char* string)
     strncpy(s, string, len + 1); // Must copy full string and null terminator 
     if( !(i%1000) ) 
         printf("i=%d, %s\n", i, s);
-    return s; // If you specify a return type then you must return something
+    return s; // If you specify a return type then you must return something of that type
 }
 
 main()
@@ -24,9 +24,9 @@ main()
     char *ptr, *string = "find the bugs!";
     
     for(i=0; i<10000; i++) {
-        ptr = (char*)malloc(BLOCKSIZE);  // It is best to cast the type of the memory allocated
+        ptr = (char*)malloc(BLOCKSIZE);  // It is best to cast the type of the memory allocated at the time of allocation
         strcpy(ptr, string);
-        free(make_copy(i, string));  // You must free everything you allocate
+        free(make_copy(i, string));  // You must free everything you allocate even within functions
         free(ptr);
     }
 }

@@ -23,6 +23,10 @@ int strtoint(char* c){
 
 int main(int argc, char* argv[])
 {
+    if(argc != 3){
+        printf("You must enter two inputs.\n");
+        return 0;
+    }
     int m, n;
     m = strtoint(argv[1]);
     n = strtoint(argv[2]);
