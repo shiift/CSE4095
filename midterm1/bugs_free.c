@@ -21,8 +21,7 @@ char* make_copy(int i, char* string)
 main()
 {
     int i;
-    char *ptr;
-    char *string = "find the bugs!";
+    char *ptr, *string = "find the bugs!";
     
     for(i=0; i<10000; i++) {
         ptr = (char*)malloc(BLOCKSIZE);  // It is best to cast the type of the memory allocated
