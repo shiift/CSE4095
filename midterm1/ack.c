@@ -32,3 +32,5 @@ int main(int argc, char* argv[])
     n = strtoint(argv[2]);
     printf("Ack(%d,%d) = %d\n", m, n, ackermann(m, n));
 }
+
+// missing a return statement at the end of main.
