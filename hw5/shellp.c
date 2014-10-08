@@ -10,7 +10,7 @@
 #include <assert.h>
 #include <string.h>
 #include <ctype.h>
-#include "shellp.H"
+#include "shellp.h"
 
 // Check the bottom of this file to locate the  method you must implement. 
 // You do not need to read the code I provide. It is their for you if you want to experiment/understand
@@ -77,7 +77,7 @@ Command* addCommandStage(Command* c,Stage* s)
    printf("New stage:");
    printStage(s);
 
-   c->_stages = realloc(c->_stages,c->_nbs + 1);
+   c->_stages = realloc(c->_stages,(c->_nbs + 1) * sizeof(Stage*));
    c->_nbs += 1;
    c->_stages[c->_nbs - 1] = s;
    return c;
