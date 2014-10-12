@@ -336,26 +336,32 @@ void printStage(Stage* s)
 
 int basicExecute(char* com,int mode,char* input,char* output,char** args)
 {
-    char command[1024];
-    if(R_INP == (mode & R_INP)){
-        FILE* file = fopen(input, "r");
-        dup2(fileno(file), 0);
-        fclose(file);
+    pid_t value = fork();
+    if(value == 0){
+        char command[1024];
+        if(R_INP == (mode & R_INP)){
+            FILE* file = fopen(input, "r");
+            dup2(fileno(file), 0);
+            fclose(file);
+        }
+        if(R_OUTP == (mode & R_OUTP)){
+            FILE* file = fopen(output, "w");
+            dup2(fileno(file), 1);
+            fclose(file);
+        }
+        if(R_APPD == (mode & R_APPD)){
+            FILE* file = fopen(output, "a");
+            dup2(fileno(file), 1);
+            fclose(file);
+        }
+        execvp(com, args);
+        char* msg = strerror(errno);
+        printf("An error has occurred: %s\n", msg);
+        return -1;
+    }else{
+        while(waitpid(-1, NULL, 0) > 0);
+        return 1;
     }
-    if(R_OUTP == (mode & R_OUTP)){
-        FILE* file = fopen(output, "w");
-        dup2(fileno(file), 1);
-        fclose(file);
-    }
-    if(R_APPD == (mode & R_APPD)){
-        FILE* file = fopen(output, "a");
-        dup2(fileno(file), 1);
-        fclose(file);
-    }
-    execvp(com, args);
-    char* msg = strerror(errno);
-    printf("An error has occurred: %s\n", msg);
-    return -1;
 }
 
 // ================================================================================
@@ -366,22 +372,15 @@ int basicExecute(char* com,int mode,char* input,char* output,char** args)
 int setupCommandPipeline(Command* c) 
 { 
     //TODO: Implement the pipeline commmand.
-    printf("com: %s\n", c->_stages[0]->_args[0]);
-    printf("kind: %d\n", c->_kind);
-    printf("mode: %d\n", c->_mode);
-    printf("out: %s\n", c->_output);
-    printf("nba: %d\n", c->_nba);
-    printf("nbs: %d\n", c->_nbs);
-    
     int i;
-    int pipes[c->_nbs-1][2];
+    int pipes[c->_nbs - 1][2];
     for(i = 0; i < c->_nbs - 1; i++){
         if(pipe(pipes[i]) < 0){
             perror("Pipe Error: ");
             return -1;
         }
     }
-    for(i = 0; i < c->_nbs - 1; i++){
+    for(i = 0; i < c->_nbs; i++){
         pid_t value = fork();
         if(value == 0){
             if(i != 0){
@@ -390,27 +389,33 @@ int setupCommandPipeline(Command* c)
                     return -1;
                 }
             }
-            if(i != c->_nbs - 2){
+            if(i != c->_nbs - 1){
                 if(dup2(pipes[i][1], 1) < 0){
                     perror("Output Error: ");
                     return -1;
                 }
             }
-            close(pipes[i][0]);
-            close(pipes[i][1]);
+            int j = 0;
+            for(j = 0; j < c->_nbs - 1; j++){
+                close(pipes[j][0]);
+                close(pipes[j][1]);
+            }
             if(i == 0 && R_INP == (c->_mode & R_INP))
                 basicExecute(c->_stages[i]->_args[0], R_INP, c->_input, NULL, c->_stages[i]->_args);
-            else if(i == c->_nbs - 2 && R_OUTP == (c->_mode & R_OUTP))
+            else if(i == c->_nbs - 1 && R_OUTP == (c->_mode & R_OUTP))
                 basicExecute(c->_stages[i]->_args[0], R_OUTP, NULL, c->_output, c->_stages[i]->_args);
-            else if(i == c->_nbs - 2 && R_APPD == (c->_mode & R_APPD))
+            else if(i == c->_nbs - 1 && R_APPD == (c->_mode & R_APPD))
                 basicExecute(c->_stages[i]->_args[0], R_APPD, NULL, c->_output, c->_stages[i]->_args);
             else
                 basicExecute(c->_stages[i]->_args[0], R_NONE, NULL, NULL, c->_stages[i]->_args);
-        }else{
-            close(pipes[i][0]);
-            close(pipes[i][1]);
+            abort();
         }
     }
+    for(i = 0; i < c->_nbs - 1; i++){
+        close(pipes[i][0]);
+        close(pipes[i][1]);
+    }
+    while(waitpid(-1, NULL, 0) > 0);
     return 1;
 }
 
