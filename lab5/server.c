@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
          }else{
              printf("Parent closing original socket.\n");
              close(newsockfd);
-             waitpid(-1, NULL, 0);
+             waitpid(-1, NULL, WNOHANG);
          }
      }
      close(sockfd);
