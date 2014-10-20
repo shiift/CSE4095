@@ -6,6 +6,7 @@
 #define CC_GET	1
 #define CC_PUT  2
 #define CC_EXIT 3
+#define CC_SIZE 4
 
 #define PL_TXT  0
 #define PL_FILE 1
