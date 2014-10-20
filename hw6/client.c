@@ -87,7 +87,15 @@ int main(int argc,char* argv[])
 
 void doOPENCommand()
 {
+    char params[256], arg[256];
+    params[0] = '\0';
     int port = 8080;
+    fgets(params,255,stdin);
+    
+    arg = strtok(params," \n\r");
+    if(params[0] != '\n'){
+        port = atoi(params);
+    }
     // Create a socket
     int sid = socket(PF_INET,SOCK_STREAM,0);
     struct sockaddr_in srv;
@@ -125,9 +133,8 @@ void doLSCommand(int sid)
     }
     if(p.code == PL_TXT) 
         printf("Got: [\n%s]\n",buf);
-    else { 
-        printf("Unexpected payload: %d\n",p.code);
-    }
+    else
+        printf("Unexpected payload: %d\n",p.code); 
     free(buf);
 }
 
