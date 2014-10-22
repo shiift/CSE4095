@@ -26,26 +26,30 @@ void doMGETCommand(int sid);
 void doMPUTCommand(int sid);
 void doGETCommand(int sid);
 void doPUTCommand(int sid); 
-void doOPENCommand(); 
+int doOPENCommand(); 
 void doCLOSECommand(int sid); 
 
 
 int main(int argc,char* argv[]) 
 {
+    char *hostname = "localhost";
     int port = 8080;
     if(argc > 1){
-        int p_port = atoi(argv[1]);
-        if(p_port > 0){
-            port = p_port;
-        }else{
-            printf("You must enter a valid port number!\n");
-            abort();
+        hostname = argv[1];
+        if(argc > 2){
+            int p_port = atoi(argv[2]);
+            if(p_port > 0){
+                port = p_port;
+            }else{
+                printf("You must enter a valid port number!\n");
+                abort();
+            }
         }
     }
     // Create a socket
     int sid = socket(PF_INET,SOCK_STREAM,0);
     struct sockaddr_in srv;
-    struct hostent *server = gethostbyname("localhost");
+    struct hostent *server = gethostbyname(hostname);
     //   srv.sin_len    = sizeof(srv);
     srv.sin_family = AF_INET;
     srv.sin_port   = htons(port);
@@ -73,7 +77,7 @@ int main(int argc,char* argv[])
         } else if (strncmp(opcode,"put",3)==0) {
             doPUTCommand(sid);
         } else if (strncmp(opcode,"open",4)==0) {
-            doOPENCommand();
+            sid = doOPENCommand();
         } else if (strncmp(opcode,"close",4)==0) {
             doCLOSECommand(sid);
         } else if (strncmp(opcode,"exit",4) == 0) {
@@ -85,27 +89,29 @@ int main(int argc,char* argv[])
     return 0;
 }
 
-void doOPENCommand()
+int doOPENCommand()
 {
-    char params[256], arg[256];
+    char params[256], *arg;
     params[0] = '\0';
     int port = 8080;
+    char *hostname = "localhost";
     fgets(params,255,stdin);
-    
-    arg = strtok(params," \n\r");
     if(params[0] != '\n'){
-        port = atoi(params);
+        hostname = strtok(params, " \n\r");
+        arg = strtok(NULL," \n\r");
+        port = atoi(arg);
     }
     // Create a socket
     int sid = socket(PF_INET,SOCK_STREAM,0);
     struct sockaddr_in srv;
-    struct hostent *server = gethostbyname("localhost");
+    struct hostent *server = gethostbyname(hostname);
     //   srv.sin_len    = sizeof(srv);
     srv.sin_family = AF_INET;
     srv.sin_port   = htons(port);
     memcpy(&srv.sin_addr.s_addr,server->h_addr,server->h_length);
     int status = connect(sid,(struct sockaddr*)&srv,sizeof(srv));
     checkError(status,__LINE__);
+    return sid;
 }
 
 void doCLOSECommand(int sid)
@@ -180,7 +186,7 @@ void doMGETCommand(int sid)
     fgets(params,255,stdin);
     char *file;
     file = strtok(params," \n\r");
-    while( file != NULL ) 
+    while( file ) 
     {
         Command c;
         Payload p;
@@ -204,7 +210,7 @@ void doMPUTCommand(int sid)
     fgets(params,255,stdin);
     char *file;
     file = strtok(params," \n\r");
-    while( file != NULL ) 
+    while( file ) 
     {
         Command c;
         Payload p;
