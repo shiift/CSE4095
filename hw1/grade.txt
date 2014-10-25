@@ -1,0 +1,4 @@
+90/100
+
+(-10) sum is used without initialization in ex1
+
