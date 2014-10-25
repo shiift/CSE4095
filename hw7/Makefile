@@ -4,15 +4,15 @@ CC=cc
 SRCS1 = hw7_serial.c matrix.c
 OBJS1 = $(SRCS1:.c=.o)
 
-SRCS2 = hw7_threads.c matrix.c
+SRCS2 = threads.c matrix.c
 OBJS2 = $(SRCS2:.c=.o)
 
-all: hw7_serial hw7_threads
+all: hw7_serial threads
 
 hw7_serial: $(OBJS1)
 	$(CC) $(CFLAGS) -o $@ $(OBJS1)
 
-hw7_threads: $(OBJS2)
+threads: $(OBJS2)
 	$(CC) $(CFLAGS) -o $@ $(OBJS2)
 
 %.o : %.c
@@ -20,5 +20,5 @@ hw7_threads: $(OBJS2)
 
 
 clean:
-	rm -rf a.out $(OBJS1) $(OBJS2) hw7_serial hw7_threads
+	rm -rf a.out $(OBJS1) $(OBJS2) hw7_serial threads
 
