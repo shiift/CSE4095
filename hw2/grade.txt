@@ -1,0 +1,3 @@
+90/100
+
+(-10) both ex2 and ex3 programs leak memory
