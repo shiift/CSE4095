@@ -1,0 +1,6 @@
+95/100
+
+The implicit declaration of the tester function does
+not match the actual type. Also, return statements are 
+missing for both the main and tester functions.            
+Compiling with -Wall shows all these warnings.
