@@ -61,28 +61,30 @@ char* md5sum(char* payload,size_t sz)
     pipe(pipes2);
 
     pid_t value = fork(); 
-    /*if(value == 0){
+    if(value == 0){
         dup2(pipes[0], 0);
     }else{
         dup2(pipes[1], 1);
-    }*/
+    }
+
     if(value == 0){
         str = readResponse(pipes[0]);
-        abort();
+        dup2(pipes2[1], 1);
+        //execvp("md5sum", "md5sum", NULL); // insert argument to caclulate md5sum for this payload
     }else{
         sendPayload(pipes[1], payload, sz);
-        while(waitpid(-1, NULL, 0) > 0);
     }
+
+    dup2(1, pipes[1]);
+    while(waitpid(-1, NULL, 0) > 0);
+    
     close(pipes[0]);
     close(pipes[1]);
 
-    if(value == 0){
-        dup2(pipes2[1], 1);
-    }else{
-        dup2(pipes2[0], 0);
-    }
+    char *output = readResponse(pipes2[0]);
+
     close(pipes2[0]);
     close(pipes2[1]);
 
-    return NULL;
+    return output;
 }
