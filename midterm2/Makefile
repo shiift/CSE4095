@@ -1,10 +1,7 @@
 CFLAGS=-pthread
 CC=cc
 
-all: ex3 ex6 mcpi
-
-ex3: ex3.c
-	$(CC) $(CFLAGS) -o $@ $<
+all:  ex6 mcpi
 
 ex6: ex6.c
 	$(CC) $(CFLAGS) -o $@ $<
