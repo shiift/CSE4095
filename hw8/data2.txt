@@ -1,0 +1,6 @@
+send Hello!
+send How are you?
+send More ?
+send I'm done.
+send cu
+exit
