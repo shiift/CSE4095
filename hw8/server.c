@@ -29,7 +29,6 @@ typedef struct ChatRoom {
     pthread_mutex_t _worklock;
     pthread_mutex_t _loglock;
     pthread_cond_t _condition;
-    pthread_mutex_t _newlog;
 } ChatRoom;
 
 typedef struct Clerk {
@@ -89,7 +88,6 @@ ChatRoom* makeRoom()
     pthread_mutex_init(&room->_worklock, NULL);
     pthread_mutex_init(&room->_loglock, NULL);
     pthread_cond_init(&room->_condition, NULL);
-    pthread_mutex_init(&room->_newlog, NULL);
     return room;
 }
 
