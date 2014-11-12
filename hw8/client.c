@@ -24,7 +24,7 @@ int main(int argc,char* argv[])
    int sid = socket(PF_INET,SOCK_STREAM,0);
    struct sockaddr_in srv;
    struct hostent *server = gethostbyname("localhost");
-   srv.sin_len    = sizeof(srv);
+   //srv.sin_len    = sizeof(srv);
    srv.sin_family = AF_INET;
    srv.sin_port   = htons(8090);
    memcpy(&srv.sin_addr.s_addr,server->h_addr,server->h_length);
@@ -61,6 +61,27 @@ int main(int argc,char* argv[])
             }
             printf("Got all messages!\n");
          } else printf("Didn't get a size message!\n");
+      } else if (strncmp(opcode,"listen",6) == 0) {
+          Command c;
+          c.code = htonl(CC_LISTEN);
+          int status = send(sid,&c,sizeof(c),0);checkError(status,__LINE__);
+          while(1){
+              Payload p;
+              status = recv(sid,&p,sizeof(p),0);checkError(status,__LINE__);
+              p.code = ntohl(p.code);
+              if (p.code == PL_SZ) {
+                int toRead = ntohl(p.nb);
+                int k;
+                printf("Expecting: %d\n",toRead);
+                for(k=0;k<toRead;k++) {
+                   status = recv(sid,&p,sizeof(p),0);checkError(status,__LINE__);
+                   p.code = ntohl(p.code);
+                   assert(p.code == PL_MSG);
+                   printf("msg[%d] = %s\n",k,p.arg);
+                }
+                printf("Got all messages!\n");
+              } else printf("Didn't get a size message!\n");
+          }
       } else if (strncmp(opcode,"exit",4) == 0) {
          done = 1;
          Command c;

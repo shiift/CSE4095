@@ -1,7 +1,7 @@
 CLI = client.o
 SRV = server.o
 OBJS = command.o
-CFLAGS = -g
+CFLAGS = -g -pthread
 
 all: client server
 
