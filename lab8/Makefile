@@ -13,8 +13,8 @@ LD=cc
 # Similarly, the 'LFLAGS' is a variable holding options for the linker and we
 # ask to include debug information.
 
-CFLAGS=-c -g 
-LFLAGS=-g 
+CFLAGS=-c -g -lpthread
+LFLAGS=-g -lpthread 
 
 all: spellCheck
 	@echo "Done!"
