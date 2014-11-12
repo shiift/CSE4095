@@ -4,7 +4,7 @@
 #include "tree.h"
 
 // void spellCheckDocument(char* filename,Tree* dico);
-void spellCheckDocument(Documents* docs, char* filename);
+void spellCheckDocument(Documents* docs, int fNum);
 int incrementList(Documents* docs);
 void spellCheckDocuments(Documents* docs);
 

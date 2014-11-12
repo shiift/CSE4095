@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "dico.h"
 #include <ctype.h>
+#include <string.h>
 
 bool isANumber(char* word)
 {
@@ -12,17 +13,13 @@ bool isANumber(char* word)
     return ad;
 }
 
-void spellCheckDocument(Documents* docs, char* filename)
+void spellCheckDocument(Documents* docs, int fNum)
 {
-    printf("%s\n", filename);
+    char* filename = docs->files[fNum];
     Tree* dico = docs->dico;
     FILE* doc = fopen(filename,"r");
     char word[1024];
-    /*char** badwords = (char**)malloc(sizeof(char*) * 1024);
-    int i;
-    for(i = 0; i < 1024; i++){
-        badwords[i] = (char*)malloc(sizeof(char) * 1024);
-    }*/
+    char** words = NULL;
     int count = 0;
     while (!feof(doc)) {
         fscanf(doc,"%s ",word);
@@ -31,14 +28,23 @@ void spellCheckDocument(Documents* docs, char* filename)
         pthread_rwlock_rdlock(&docs->rwlock);
         bool found = lookupInTree(dico,word);
         pthread_rwlock_unlock(&docs->rwlock);
-        if (!found) {
-            pthread_rwlock_wrlock(&docs->rwlock);
-            printf("Word [%s] spelled incorrectly.\n",word);
-            pthread_rwlock_unlock(&docs->rwlock);
-            //badwords[count] = strdup(word);
-            count++;
+        if (!found && !(fNum % docs->j)) {
+            words = realloc(words, sizeof(char*) * (count+1));
+            words[count++] = strdup(word);
         }
     }
+    int i;
+    pthread_rwlock_wrlock(&docs->rwlock);
+    for(i = 0; i < count; i++){
+        bool found = lookupInTree(docs->dico, words[i]);
+        if(!found){
+            addStringToTree(docs->dico, words[i]);
+            printf("%s is misspelled in %s\n", words[i], filename);
+        }
+        free(words[i]);
+    }
+    pthread_rwlock_unlock(&docs->rwlock);
+    free(words);
     fclose(doc);
 }
 
@@ -55,7 +61,7 @@ void spellCheckDocuments(Documents* docs)
 {
     while(docs->location < 38){
         int fileloc = incrementList(docs);
-        spellCheckDocument(docs, docs->files[fileloc]);
+        spellCheckDocument(docs, fileloc);
     }
     return;
 }
