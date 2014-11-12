@@ -139,13 +139,15 @@ void listenClient(Clerk* clerk)
     while(1){
         pthread_mutex_lock(&clerk->_room->_loglock);
         pthread_cond_wait(&clerk->_room->_condition, &clerk->_room->_loglock);
-        updateClient(clerk);
+        if(clerk->_room->_nbl != clerk->_upto)
+            updateClient(clerk);
         pthread_mutex_unlock(&clerk->_room->_loglock);
     }
 }
 
 void* handleNewConnection(Clerk* clerk)
 {
+    pthread_detach(pthread_self());
     int chatSocket = clerk->_fd;
     int done = 0;
     pthread_mutex_lock(&clerk->_room->_worklock);
