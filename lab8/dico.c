@@ -67,5 +67,9 @@ Tree* readDictionary(char* fname)
    Tree* t = makeEmptyTree();
    fillTreeWith(t,words,0,nbWords-1);
    fclose(f);
+   for(i = 0; i < nbWords; i++){
+     free(words[i]);
+   }
+   free(words);
    return t;
 }
