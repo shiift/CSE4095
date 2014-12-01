@@ -1,0 +1,14 @@
+send Hello!
+send How are you?
+get
+send More ?
+send I'm done.
+send cu
+get
+send lorem
+send ipsum
+send dolor
+send aaa bbb
+send ccc ddd
+get
+listen

@@ -1,0 +1,93 @@
+The output of the program is as follows:
+
+wsd10001@wsd10001:[~/wsd10001/lab8]$ time ./spellCheck 1 1 > output.txt
+
+real    0m1.585s
+user    0m1.489s
+sys     0m0.027s
+wsd10001@wsd10001:[~/wsd10001/lab8]$ time ./spellCheck 1 2 > output.txt
+
+real    0m0.971s
+user    0m1.649s
+sys     0m0.101s
+wsd10001@wsd10001:[~/wsd10001/lab8]$ time ./spellCheck 1 3 > output.txt
+
+real    0m1.019s
+user    0m1.629s
+sys     0m0.171s
+wsd10001@wsd10001:[~/wsd10001/lab8]$ time ./spellCheck 1 4 > output.txt
+
+real    0m0.979s
+user    0m1.638s
+sys     0m0.136s
+wsd10001@wsd10001:[~/wsd10001/lab8]$ time ./spellCheck 2 1 > output.txt
+
+real    0m1.507s
+user    0m1.491s
+sys     0m0.015s
+wsd10001@wsd10001:[~/wsd10001/lab8]$ time ./spellCheck 2 2 > output.txt
+
+real    0m1.076s
+user    0m1.561s
+sys     0m0.094s
+wsd10001@wsd10001:[~/wsd10001/lab8]$ time ./spellCheck 2 3 > output.txt
+
+real    0m1.063s
+user    0m1.774s
+sys     0m0.131s
+wsd10001@wsd10001:[~/wsd10001/lab8]$ time ./spellCheck 2 4 > output.txt
+
+real    0m0.964s
+user    0m1.592s
+sys     0m0.120s
+wsd10001@wsd10001:[~/wsd10001/lab8]$ time ./spellCheck 3 1 > output.txt
+
+real    0m1.496s
+user    0m1.479s
+sys     0m0.016s
+wsd10001@wsd10001:[~/wsd10001/lab8]$ time ./spellCheck 3 2 > output.txt
+
+real    0m0.950s
+user    0m1.650s
+sys     0m0.085s
+wsd10001@wsd10001:[~/wsd10001/lab8]$ time ./spellCheck 3 3 > output.txt
+
+real    0m0.957s
+user    0m1.574s
+sys     0m0.121s
+wsd10001@wsd10001:[~/wsd10001/lab8]$ time ./spellCheck 3 4 > output.txt
+
+real    0m0.968s
+user    0m1.609s
+sys     0m0.150s
+wsd10001@wsd10001:[~/wsd10001/lab8]$ time ./spellCheck 4 1 > output.txt
+
+real    0m1.460s
+user    0m1.441s
+sys     0m0.019s
+wsd10001@wsd10001:[~/wsd10001/lab8]$ time ./spellCheck 4 2 > output.txt
+
+real    0m0.926s
+user    0m1.586s
+sys     0m0.081s
+wsd10001@wsd10001:[~/wsd10001/lab8]$ time ./spellCheck 4 3 > output.txt
+
+real    0m0.945s
+user    0m1.477s
+sys     0m0.090s
+wsd10001@wsd10001:[~/wsd10001/lab8]$ time ./spellCheck 4 4 > output.txt
+
+real    0m0.960s
+user    0m1.595s
+sys     0m0.144s
+
+As we can see the fastest real time for this program was with j = 4 and k = 2.
+In general it looks like 2 threads ran the fastetst. In general the following
+held true, if j is higher, there are fewer read/write locks to update the
+dictionary tree. This makes the program as a whole faster. The reason why 2
+threads was more efficient is because the overhead for creating threads is
+greater than the added benefits of having many threads. This is likely due
+to the fact there there are waits over insertions in a tree. This is a
+relatively expensive operation and takes some time while the mutex is locked.
+
+In general many of the run times were very similar.
