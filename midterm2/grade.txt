@@ -1,0 +1,8 @@
+ex5: -10 
+
+Neither the child nor the parent exec md5sum, so how is the result obtained? All writing ends of a pipe must 
+be closed before readResponse can complete.  Also, the standard output of the parent should not be changed, 
+otherwise there the is no way to print the result.
+
+
+ex6: Great job!
