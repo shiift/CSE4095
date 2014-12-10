@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <pthread.h>
 
 #define LEN 100000
 #define NUMVEC 2
@@ -69,7 +70,7 @@ int main (int argc, char *argv[])
         }
 
         for( i=0; i<vector->len; i++ ) 
-            vector->data[i]=1;
+            vector->data[i]=i%2;
 
         vector->start = 0;
         vector->end = vector->len;

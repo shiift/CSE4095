@@ -1,0 +1,3 @@
+95/100
+
+The threads should work on the same copy of the data array, in your code each receives its own copy.
