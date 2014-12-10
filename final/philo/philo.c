@@ -12,6 +12,7 @@
 
 typedef struct PhiloTag {
    int            pid;
+   int          state;
    // add whatever you want
 } Philosopher;
 

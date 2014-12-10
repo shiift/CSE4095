@@ -24,10 +24,11 @@ void readString(char* buf,size_t sz)
 
 int main(int argc,char* argv[])
 {
+   int i;
    int nbThreads = atoi(argv[1]);
    char buf[128];
    pthread_t minion[nbThreads];
-   for(int i=0;i < nbThreads;i++) {
+   for(i=0;i < nbThreads;i++) {
       printf("give a filename: ");
       readString(buf,sizeof(buf)-1);
       printf("Got [%s]\n",buf);
@@ -36,7 +37,7 @@ int main(int argc,char* argv[])
       strncpy(arg.fileName,buf,sizeof(buf)-1);
       pthread_create(minion+i,NULL,(void*(*)(void*))doWork,&arg);
    }
-   for(int i=0;i < nbThreads;i++)
+   for(i=0;i < nbThreads;i++)
       pthread_join(minion[i],NULL);
    return 0;
 }

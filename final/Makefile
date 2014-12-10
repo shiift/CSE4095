@@ -1,5 +1,5 @@
 CC=cc
-CFLAGS=-g
+CFLAGS=-g -pthread
 
 all: ex3 ex4
 

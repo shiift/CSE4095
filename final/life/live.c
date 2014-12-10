@@ -61,7 +61,7 @@ void saveBoard(Board* b,FILE* fd)
 
 void printBoard(Board* b)
 {
-   printf("\033\143");  // this is to clear the terminal
+   printf("\033\143");  /* this is to clear the terminal */
    saveBoard(b,stdout);
 }
 
@@ -107,7 +107,7 @@ int main(int argc,char* argv[])
       b1 = g & 0x1 ? life1 : life2;
       printBoard(b0);
       evolveBoard(b0,b1);
-      usleep(5000);
+      usleep(100000);
    }
    printBoard(b1);
    FILE* final = fopen("final.txt","w");
