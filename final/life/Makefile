@@ -1,15 +1,15 @@
 CC=cc
 CFLAGS=-g -std=c89
 LIBS=-pthread
-OBJS = live.o
+OBJS = live_threaded.o
 
-all: life
+all: life_threaded
 
-life: $(OBJS)
-	$(CC) -o life $(OBJS) $(LIBS)
+life_threaded: $(OBJS)
+	$(CC) -o life_threaded $(OBJS) $(LIBS)
 
 %.o : %.c
 	$(CC) $(CFLAGS) -c $< 
 
 clean:
-	rm -rf *.o life
+	rm -rf *.o life_threaded
