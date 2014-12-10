@@ -5,11 +5,13 @@
 
 typedef struct ThreadArg_tag {
    int i;
-   char fileName[128];
+   char* fileName;
 } ThreadArg;
 
 void* doWork(ThreadArg* arg)
 {
+   free(arg->fileName);
+   free(arg);
    return NULL;
 }
 
@@ -32,10 +34,11 @@ int main(int argc,char* argv[])
       printf("give a filename: ");
       readString(buf,sizeof(buf)-1);
       printf("Got [%s]\n",buf);
-      ThreadArg arg;
-      arg.i = i;
-      strncpy(arg.fileName,buf,sizeof(buf)-1);
-      pthread_create(minion+i,NULL,(void*(*)(void*))doWork,&arg);
+      ThreadArg* arg = calloc(1, sizeof(ThreadArg));
+      arg->i = i;
+      arg->fileName = calloc(128, sizeof(char));
+      strncpy(arg->fileName,buf,sizeof(buf)-1);
+      pthread_create(minion+i,NULL,(void*(*)(void*))doWork,arg);
    }
    for(i=0;i < nbThreads;i++)
       pthread_join(minion[i],NULL);
