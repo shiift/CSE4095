@@ -3,6 +3,12 @@
 #include <stdlib.h>
 #include <string.h>
 
+// NOTE: I decided to put the unlock at the beginning of silly because of our
+// restriction that we cannot change the code. If I was allowed to make
+// changes to the code I would have put the unlock before the recursive call
+// to silly inside the if statement and in an else statement as well. I would
+// also remove the rdlock call before executing silly in doWork.
+
 static long long t[1024] = {0};
 
 void silly(long n,pthread_rwlock_t* rwl)
