@@ -149,7 +149,7 @@ int main(int argc,char* argv[])
         pthread_join(tids[g], NULL);
     }
     printBoard(bt->b1);
-    FILE* final = fopen("final.txt","w");
+    FILE* final = fopen("finalMT.txt","w");
     saveBoard(bt->b1,final);
     fclose(final);
     pthread_barrier_destroy(bar);
