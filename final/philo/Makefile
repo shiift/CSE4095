@@ -1,5 +1,5 @@
 CC=cc
-CFLAGS=-g -std=c99
+CFLAGS=-g -pthread
 
 all: philo
 

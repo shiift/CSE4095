@@ -157,4 +157,5 @@ int main(int argc,char* argv[])
     free(bt);
     freeBoard(life1);
     freeBoard(life2);
+    return 0;
 }

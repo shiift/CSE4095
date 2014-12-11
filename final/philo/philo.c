@@ -11,17 +11,13 @@
 #define EAT    2
 
 typedef struct PhiloTag {
-    int            pid;
-    int          state;
-    int      max_state;
-    int     handedness;
-    // add whatever you want
+    int pid;
+    int state;
+    int rounds;
+    int num_philos;
+    int handedness;
+    pthread_mutex_t** forks;
 } Philosopher;
-
-typedef struct Fork {
-    int      available;
-    pthread_mutex_t  m;
-} Fork;
 
 void doActivity(int activity,Philosopher* p,unsigned* seed)
 {
@@ -31,9 +27,40 @@ void doActivity(int activity,Philosopher* p,unsigned* seed)
 }
 
 int dining(Philosopher* philo){
-    //while(philo->state <= philo->max_state){
-    //    doActivity(philo->state+1, philo, pthread_self());
-    //}
+    pthread_mutex_t** forks = philo->forks;
+    int counter = 0;
+    unsigned seed = (unsigned)pthread_self();
+    while(counter < philo->rounds){
+        switch(philo->state){
+            case THINK:
+                printf("P[%d] Thinking\n", philo->pid);
+                doActivity(HUNGRY, philo, &seed);
+                break;
+            case HUNGRY:
+                doActivity(EAT, philo, &seed);
+                if(philo->pid % 2){ // lefty
+                    pthread_mutex_lock(forks[philo->pid]); 
+                    pthread_mutex_lock(forks[ (philo->pid+1) % philo->num_philos ]);
+                }else{              // righty
+                    pthread_mutex_lock(forks[ (philo->pid+1) % philo->num_philos ]);
+                    pthread_mutex_lock(forks[philo->pid]); 
+                }
+                printf("P[%d] Hungry\n", philo->pid);
+                break;
+            case EAT:
+                printf("P[%d] Eating\n", philo->pid);
+                doActivity(THINK, philo, &seed);
+                if(philo->pid % 2){ // lefty
+                    pthread_mutex_unlock(forks[ (philo->pid+1) % philo->num_philos ]);
+                    pthread_mutex_unlock(forks[philo->pid]); 
+                }else{              // righty
+                    pthread_mutex_unlock(forks[philo->pid]); 
+                    pthread_mutex_unlock(forks[ (philo->pid+1) % philo->num_philos ]);
+                }
+                counter++;
+                break;
+        }
+    }
     return 1;
 }
 
@@ -41,29 +68,38 @@ int main(int argc,char* argv[])
 {
     int n = atoi(argv[1]);  // number of philosophers
     int c = atoi(argv[2]);  // number of cycles
-    if(argc != 3)
+    if(argc != 3){
+        printf("Incorrent Parameters\n");
         return -1;
+    }
+    if(n < 2){
+        printf("You don't have enough Philosophers\n");
+        return -1;
+    }
     int i;
+    pthread_t tids[n];
+
     Philosopher** philos = malloc(sizeof(Philosopher*) * n);
-    Fork** forks = malloc(sizeof(Fork*) * n);
+    pthread_mutex_t** forks = malloc(sizeof(pthread_mutex_t*) * n);
     for(i = 0; i < n; i++){
-        forks[i] = malloc(sizeof(Fork) * n);
-        forks[i]->available = 1;
-        pthread_mutex_init(&forks[i]->m, NULL);
+        forks[i] = malloc(sizeof(pthread_mutex_t));
+        pthread_mutex_init(forks[i], NULL);
     }
     for(i = 0; i < n; i++){
         philos[i] = malloc(sizeof(Philosopher) * n);
+        philos[i]->pid = i;
         philos[i]->state = 0;
-        philos[i]->max_state = c-1;
-        philos[i]->handedness = i % 2;
-        pthread_create(philos[i]->pid,NULL,(void*(*)(void*))dining,(void*)philos[i]);
+        philos[i]->rounds = c;
+        philos[i]->num_philos = n;
+        philos[i]->forks = forks;
+        pthread_create(&tids[i],NULL,(void*(*)(void*))dining,(void*)philos[i]);
     }
-
     for(i = 0; i < n; i++){
-        pthread_mutex_destroy(&forks[i]->m);
+        pthread_join(tids[i],NULL);
+    }
+    for(i = 0; i < n; i++){
+        pthread_mutex_destroy(forks[i]);
         free(forks[i]);
-    }
-    for(i = 0; i < n; i++){
         free(philos[i]);
     }
     free(forks);
