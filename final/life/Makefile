@@ -1,5 +1,5 @@
 CC=cc
-CFLAGS=-g -std=c89
+CFLAGS=-g
 LIBS=-pthread
 OBJS = live_threaded.o
 
