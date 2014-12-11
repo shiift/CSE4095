@@ -50,6 +50,8 @@ int dining(Philosopher* philo){
             case EAT:
                 printf("P[%d] Eating\n", philo->pid);
                 doActivity(THINK, philo, &seed);
+                // order of unlocking probably does not matter here, but it is nice
+                // to do it anyway
                 if(philo->pid % 2){ // lefty
                     pthread_mutex_unlock(forks[ (philo->pid+1) % philo->num_philos ]);
                     pthread_mutex_unlock(forks[philo->pid]); 
