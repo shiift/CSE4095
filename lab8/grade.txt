@@ -1,3 +1,5 @@
 100/100
 
-Nice work!
+Using realloc to grow the array of mispelled words by 1 is very expensive, you should use a better list
+implementation double the size when running out of space.
+
