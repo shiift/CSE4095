@@ -31,7 +31,7 @@ int main(int argc,char* argv[])
    int status = connect(sid,(struct sockaddr*)&srv,sizeof(srv));
    checkError(status,__LINE__);
    int done = 0;
-   FILE* cmds = fopen(argv[1],"r");
+   FILE* cmds = stdin; //fopen(argv[1],"r");
    do {
       char opcode[32];
       fscanf(cmds,"%s ",opcode);
