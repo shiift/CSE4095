@@ -28,6 +28,9 @@ void spellCheckDocument(Documents* docs, int fNum)
         pthread_rwlock_rdlock(&docs->rwlock);
         bool found = lookupInTree(dico,word);
         pthread_rwlock_unlock(&docs->rwlock);
+      if (!found) {
+         printf("Word [%s] spelled incorrectly.\n",word);
+      }
         if (!found && !(fNum % docs->j)) {
             words = realloc(words, sizeof(char*) * (count+1));
             words[count++] = strdup(word);
